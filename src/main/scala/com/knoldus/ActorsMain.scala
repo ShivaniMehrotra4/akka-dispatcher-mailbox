@@ -27,6 +27,8 @@ object ActorsMain extends App {
   val finalResult = Await.result(almostFinal, 10 second)
   println(finalResult)
 
+  val avgResult = calcAverage(finalResult,listOfFiles.length)
+  println(avgResult)
 
   /**
    * getFutureOfCountItems function returns a list that contains all case class objects with future wrapper.
@@ -58,5 +60,10 @@ object ActorsMain extends App {
     CountItems(acc.countError + y.countError, acc.countWarnings + y.countWarnings, acc.countInfo + y.countInfo)
   }
 
-
+  def calcAverage(items: CountItems, length: Int) : List[Double] = {
+    val err = items.countError / length
+    val warn = items.countWarnings / length
+    val info = items.countInfo / length
+    List(err,warn,info)
+  }
 }
