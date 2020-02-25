@@ -18,7 +18,9 @@ class LogActor extends Actor {
     case fileName(file) =>
       val fSource = Source.fromFile(s"$file")
       val listOfLines = fSource.getLines().toList
-      Future(finder(listOfLines)).pipeTo(sender())
+      val cObject = finder(listOfLines)
+
+      Future(cObject).pipeTo(sender())
   }
 
   /**
@@ -34,6 +36,9 @@ class LogActor extends Actor {
       case head :: rest if head.contains("[INFO]") => numOfInfo += 1; finder(rest)
       case _ :: rest => finder(rest)
     }
+  }
+  def futureWrapper(caseObject : CountItems) : Future[CountItems] = {
+    Future{caseObject}
   }
 
 }
